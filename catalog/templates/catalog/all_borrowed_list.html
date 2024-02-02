@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>All Borrowed List</h1>
+
+  {% for book in borrowedlist %}
+    <ul>
+      {% for booknow in book.bookinstance_set.all %}
+        {% if forloop.first %}
+          {% if booknow.status == 'o' %}
+            <li>
+              <a href="{{ booknow.book.get_absolute_url }}">{{ booknow.book.title }}</a>
+              <p class="{% if booknow.is_overdue %}text-danger{% else %}text-success{% endif %}">borrowed by
+                {{ booknow.book }}, due to
+                {{ booknow.due_back }}</p>
+            </li>
+          {% endif %}
+        {% endif %}
+      </ul>
+      {% empty %}
+      <p>There are no books on loan.</p>
+    {% endfor %}
+  {% endfor %}
+{% endblock %}
